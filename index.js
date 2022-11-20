@@ -1,4 +1,5 @@
 const contentEl = document.querySelector(".content");
+const resetButtonEl = document.querySelector('button');
 
 console.log(contentEl);
 let markup = "";
@@ -31,6 +32,7 @@ console.log(markup);
 
 contentEl.insertAdjacentHTML("beforeend", markup);
 contentEl.addEventListener("click", onDivClick);
+resetButtonEl.addEventListener("click",onResetBtnClick)
 
 function onDivClick(e) {
   if (e.target.textContent) {
@@ -43,14 +45,17 @@ function onDivClick(e) {
     localStorage.setItem(STORAGE_KEY_X, JSON.stringify(playerX));
     if (winnerArray.some(item => item.every(number => playerX.includes(number.toString())))) { 
         setTimeout(() => (alert('X')));
-       return 
+        contentEl.removeEventListener("click", onDivClick);
+        return
+      
       };
   } else {
     playerO.push(id);
     localStorage.setItem(STORAGE_KEY_O, JSON.stringify(playerO));
     if (winnerArray.some(item => item.every(number => playerO.includes(number.toString())))) {
      setTimeout(() => (alert('O')));
-       return 
+     contentEl.removeEventListener("click", onDivClick);
+     
       };
   }
   player = player === "X" ? "O" : "X";
@@ -74,7 +79,10 @@ function onDivClick(e) {
 
 
 function onResetBtnClick () {
+    contentEl.innerHTML = markup;
+    localStorage.clear();
 playerO = [];
 playerX = [];
-
+// playerX = 'X';
+contentEl.addEventListener("click", onDivClick);
 }
